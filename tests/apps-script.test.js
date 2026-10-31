@@ -33,6 +33,12 @@ function crearEntorno({ ahora = '2026-11-10T12:00:00Z', invitaciones = null, sin
           hoja.filas[fila - 1][columna - 1] = valor;
           return { setFontWeight: () => {} };
         },
+        setValues: (matriz) => {
+          matriz.forEach((valores, r) => {
+            while (hoja.filas.length < fila + r) hoja.filas.push([]);
+            valores.forEach((valor, i) => { hoja.filas[fila - 1 + r][columna - 1 + i] = valor; });
+          });
+        },
       }),
     };
     hojas.set(nombre, hoja);
@@ -47,6 +53,8 @@ function crearEntorno({ ahora = '2026-11-10T12:00:00Z', invitaciones = null, sin
   ]);
 
   if (sinHojaDeInvitaciones) hojas.delete('Invitaciones');
+
+  const memoria = new Map();
 
   const FechaFija = class extends Date {
     constructor(...argumentos) {
@@ -70,6 +78,9 @@ function crearEntorno({ ahora = '2026-11-10T12:00:00Z', invitaciones = null, sin
       createTextOutput: (texto) => ({ texto, setMimeType() { return this; } }),
     },
     MailApp: { sendEmail: (correo) => correos.push(correo) },
+    LockService: { getScriptLock: () => ({ waitLock: () => {}, releaseLock: () => {} }) },
+    CacheService: { getScriptCache: () => ({ get: (clave) => (memoria.has(clave) ? memoria.get(clave) : null), put: (clave, valor) => memoria.set(clave, valor) }) },
+    console: { error: () => {} },
   });
   vm.runInContext(CODIGO, contexto);
 
@@ -90,6 +101,7 @@ const confirmacion = (extra = {}) => ({
   acompanante: { lleva: false, nombre: '' },
   alimentacion: { tiene: false, detalle: '' },
   invitacion: 'Ivan & Katherine',
+  correo: 'ana@example.com',
   codigo: CODIGO_SOLO,
   ...extra,
 });
@@ -123,11 +135,14 @@ test('un invitado "solo" que confirma sin acompañante queda registrado', () => 
   const entorno = crearEntorno();
   assert.deepEqual(entorno.enviar(confirmacion()), { ok: true });
   const [encabezados, fila] = entorno.confirmaciones();
-  assert.equal(encabezados.at(-1), 'Código');
+  assert.equal(encabezados.at(-1), 'ID del dispositivo');
+  assert.equal(encabezados.at(-2), 'Última actualización');
   assert.equal(fila[1], 'Ana María López');
-  assert.equal(fila[7], 'Sí');
-  assert.equal(fila[8], 1);
-  assert.equal(fila[9], CODIGO_SOLO);
+  assert.equal(fila[6], 'Sí');
+  assert.equal(fila[7], 1);
+  assert.equal(fila[8], CODIGO_SOLO);
+  assert.equal(fila[9], 'ana@example.com');
+  assert.equal(fila[10], 1);
 });
 
 test('SE RECHAZA un acompañante si el código es de 1 espacio, aunque se salten la página', () => {
@@ -150,7 +165,7 @@ test('SE RECHAZA el acompañante si el código no existe o falta', () => {
 test('el cupo lo decide la hoja y no lo que diga la página', () => {
   const entorno = crearEntorno();
   entorno.enviar(confirmacion({ espacios: 2 }));
-  assert.equal(entorno.confirmaciones()[1][8], 1, 'la fila guarda 1 espacio, no el 2 que mandó la página');
+  assert.equal(entorno.confirmaciones()[1][7], 1, 'la fila guarda 1 espacio, no el 2 que mandó la página');
 });
 
 test('con un código de 2 espacios sí se acepta el acompañante', () => {
@@ -160,19 +175,21 @@ test('con un código de 2 espacios sí se acepta el acompañante', () => {
   const fila = entorno.confirmaciones()[1];
   assert.equal(fila[2], 'Sí');
   assert.equal(fila[3], 'Luis Mora Vega');
-  assert.equal(fila[8], 2);
+  assert.equal(fila[7], 2);
 });
 
-test('la fila guarda el saludo de la hoja como invitación', () => {
+test('la hoja no tiene columna "Invitación"', () => {
   const entorno = crearEntorno();
   entorno.enviar(confirmacion({ codigo: CODIGO_FAMILIA, invitacion: 'texto que mandó la página' }));
-  assert.equal(entorno.confirmaciones()[1][6], 'Familia Mora');
+  const [encabezados, fila] = entorno.confirmaciones();
+  assert.ok(!encabezados.includes('Invitación'));
+  assert.ok(!fila.includes('Familia Mora') && !fila.includes('texto que mandó la página'));
 });
 
 test('quien no podrá asistir queda marcado con "No"', () => {
   const entorno = crearEntorno();
   entorno.enviar(confirmacion({ asistira: false }));
-  assert.equal(entorno.confirmaciones()[1][7], 'No');
+  assert.equal(entorno.confirmaciones()[1][6], 'No');
 });
 
 test('pasada la fecha límite no se aceptan confirmaciones', () => {
@@ -220,4 +237,178 @@ test('con el enlace general de 2 lugares se acepta acompañante; con el de 1 no'
   assert.equal(con.ok, true);
   const sin = entorno.enviar(confirmacion({ codigo: 'CXRWMW8J7DUZ', acompanante: { lleva: true, nombre: 'Luis' } }));
   assert.equal(sin.ok, false);
+});
+
+test('un código inventado o ausente no puede guardar nada', () => {
+  for (const codigo of ['INVENTADO12345', '', undefined]) {
+    const entorno = crearEntorno();
+    const respuesta = entorno.enviar(confirmacion({ codigo }));
+    assert.equal(respuesta.ok, false, `código ${JSON.stringify(codigo)}`);
+    assert.match(respuesta.error, /no es válida/);
+    assert.equal(entorno.confirmaciones().length, 0);
+  }
+});
+
+
+test('el correo es obligatorio y debe tener un formato válido', () => {
+  for (const correo of ['', undefined, 'sin-arroba', 'a@b', 'a@@b.com', 'a b@c.com', 'a@b.c', `${'x'.repeat(250)}@mail.com`]) {
+    const entorno = crearEntorno();
+    const respuesta = entorno.enviar(confirmacion({ correo }));
+    assert.equal(respuesta.ok, false, `correo ${JSON.stringify(correo)}`);
+    assert.equal(entorno.confirmaciones().length, 0);
+  }
+});
+
+test('el correo se guarda en minúsculas', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ correo: '  Ana.Lopez@Example.COM ' }));
+  assert.equal(entorno.confirmaciones()[1][9], 'ana.lopez@example.com');
+});
+
+const D1 = 'dispositivo-uno-1234';
+const D2 = 'dispositivo-dos-5678';
+
+test('mismo dispositivo y mismo correo reemplazan la fila, aunque cambien el nombre', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ nombre: 'Ana Maria Lopes', dispositivo: D1 }));
+  const fechaOriginal = entorno.confirmaciones()[1][0];
+  entorno.enviar(confirmacion({ nombre: 'Ana María López', asistira: false, dispositivo: D1 }));
+  assert.equal(entorno.confirmaciones().length, 2);
+  const fila = entorno.confirmaciones()[1];
+  assert.equal(fila[1], 'Ana María López');
+  assert.equal(fila[6], 'No');
+  assert.equal(fila[10], 2);
+  assert.equal(fila[0], fechaOriginal);
+});
+
+test('mismo dispositivo y mismo nombre reemplazan la fila, aunque cambien el correo', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ correo: 'ana@viejo.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ correo: 'ana@nuevo.com', dispositivo: D1 }));
+  assert.equal(entorno.confirmaciones().length, 2);
+  assert.equal(entorno.confirmaciones()[1][9], 'ana@nuevo.com');
+});
+
+test('mismo correo y mismo nombre desde otro dispositivo reemplazan la fila', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ dispositivo: D1 }));
+  entorno.enviar(confirmacion({ dispositivo: D2, asistira: false }));
+  assert.equal(entorno.confirmaciones().length, 2);
+  assert.equal(entorno.confirmaciones()[1][6], 'No');
+  assert.equal(entorno.confirmaciones()[1][12], D2);
+});
+
+test('mayúsculas, tildes y espacios en el nombre no crean otra persona', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ nombre: 'Ana María López', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ nombre: '  ana   maria LOPEZ ', dispositivo: D1 }));
+  assert.equal(entorno.confirmaciones().length, 2);
+});
+
+test('una familia en el mismo teléfono (mismo dispositivo) no se sobrescribe entre sí', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ nombre: 'Ana María López', correo: 'ana@example.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ nombre: 'Luis Mora Vega', correo: 'luis@example.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ nombre: 'Sofía Mora López', correo: 'sofia@example.com', dispositivo: D1 }));
+  assert.equal(entorno.confirmaciones().length, 4);
+});
+
+test('una pareja que comparte correo no se sobrescribe entre sí', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ nombre: 'Ana María López', correo: 'familia@example.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ nombre: 'Luis Mora Vega', correo: 'familia@example.com', dispositivo: D2 }));
+  assert.equal(entorno.confirmaciones().length, 3);
+});
+
+test('dos personas con el mismo nombre pero distinto correo y dispositivo son invitados distintos', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ correo: 'ana1@example.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ correo: 'ana2@example.com', dispositivo: D2 }));
+  assert.equal(entorno.confirmaciones().length, 3);
+});
+
+test('si coincide solo una de las tres señales se crea una fila nueva', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ nombre: 'Ana María López', correo: 'ana@example.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ nombre: 'Luis Mora Vega', correo: 'ana@example.com', dispositivo: D2 }));
+  entorno.enviar(confirmacion({ nombre: 'Sofía Mora López', correo: 'sofia@example.com', dispositivo: D1 }));
+  entorno.enviar(confirmacion({ nombre: 'Ana María López', correo: 'otra@example.com', dispositivo: D2 }));
+  assert.equal(entorno.confirmaciones().length, 5);
+});
+
+test('sin ID de dispositivo, correo y nombre iguales siguen reemplazando', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion());
+  entorno.enviar(confirmacion({ asistira: false }));
+  assert.equal(entorno.confirmaciones().length, 2);
+  assert.equal(entorno.confirmaciones()[1][10], 2);
+});
+
+test('al reemplazar sin ID nuevo se conserva el ID guardado', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ dispositivo: D1 }));
+  entorno.enviar(confirmacion({ dispositivo: undefined }));
+  assert.equal(entorno.confirmaciones()[1][12], D1);
+});
+
+test('la respuesta no revela si esa persona ya había confirmado', () => {
+  const entorno = crearEntorno();
+  assert.deepEqual(entorno.enviar(confirmacion()), { ok: true });
+  assert.deepEqual(entorno.enviar(confirmacion()), { ok: true });
+});
+
+test('hay un límite de envíos por minuto contra el spam', () => {
+  const entorno = crearEntorno();
+  let rechazado = null;
+  for (let i = 0; i < 40; i += 1) {
+    const respuesta = entorno.enviar(confirmacion({ nombre: `Persona Numero ${'abcdefghijklmnopqrstuvwxyz'[i % 26]}${'x'.repeat(i)}`, correo: `persona${i}@example.com` }));
+    if (!respuesta.ok) {
+      rechazado = respuesta;
+      break;
+    }
+  }
+  assert.ok(rechazado, 'en algún momento se frena');
+  assert.match(rechazado.error, /demasiadas solicitudes/);
+  assert.ok(entorno.confirmaciones().length - 1 <= 30);
+});
+
+test('una solicitud gigante se rechaza sin procesarla', () => {
+  const entorno = crearEntorno();
+  const respuesta = entorno.enviar(confirmacion({ alimentacion: { tiene: true, detalle: 'a'.repeat(40000) } }));
+  assert.equal(respuesta.ok, false);
+  assert.equal(entorno.confirmaciones().length, 0);
+});
+
+test('los errores no muestran detalles internos del script', () => {
+  const respuesta = crearEntorno().enviarCrudo('esto no es json');
+  assert.equal(respuesta.ok, false);
+  assert.doesNotMatch(respuesta.error, /SyntaxError|JSON|at /);
+});
+
+test('guarda el ID del dispositivo que hizo el envío', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ dispositivo: 'f47ac10b-58cc-4372-a567-0e02b2c3d479' }));
+  assert.equal(entorno.confirmaciones()[1][12], 'f47ac10b-58cc-4372-a567-0e02b2c3d479');
+});
+
+test('un ID de dispositivo con formato raro se descarta', () => {
+  const entorno = crearEntorno();
+  entorno.enviar(confirmacion({ dispositivo: '<script>alert(1)</script>' }));
+  assert.equal(entorno.confirmaciones()[1][12], '');
+});
+
+test('un mismo dispositivo no puede enviar más de 10 veces en 10 minutos', () => {
+  const entorno = crearEntorno();
+  let rechazada = null;
+  for (let i = 0; i < 15; i += 1) {
+    const respuesta = entorno.enviar(confirmacion({ nombre: `Persona Numero ${'abcdefghijklmnopqrstuvwxyz'[i]}`, correo: `p${i}@example.com`, dispositivo: 'dispositivo-abusivo-1' }));
+    if (!respuesta.ok) {
+      rechazada = { respuesta, enviosAntes: i };
+      break;
+    }
+  }
+  assert.ok(rechazada, 'se frena');
+  assert.equal(rechazada.enviosAntes, 10);
+  assert.match(rechazada.respuesta.error, /demasiadas solicitudes/);
+  assert.equal(entorno.enviar(confirmacion({ nombre: 'Otra Persona Mas', correo: 'otra@example.com', dispositivo: 'otro-dispositivo-2' })).ok, true);
 });

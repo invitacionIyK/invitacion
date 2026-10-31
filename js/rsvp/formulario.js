@@ -6,7 +6,8 @@ import { contarPalabras, limitarPalabras } from './palabras.js';
 import { validarFormulario } from './validacion.js';
 
 
-const ORDEN_DE_CAMPOS = ['nombre', 'asistira', 'acompanante', 'nombreAcompanante', 'alimentacion', 'detalle'];
+const CLAVE_DE_DISPOSITIVO = 'invitacion-dispositivo';
+const ORDEN_DE_CAMPOS = ['nombre', 'asistira', 'correo', 'acompanante', 'nombreAcompanante', 'alimentacion', 'detalle'];
 
 export function iniciarRsvp({ invitado = { saludo: '', nombre: '', espacios: 1, codigo: '' } } = {}) {
   const raiz = document.getElementById('rsvp');
@@ -18,6 +19,7 @@ export function iniciarRsvp({ invitado = { saludo: '', nombre: '', espacios: 1, 
 
   const campos = {
     nombre: formulario.elements.nombre,
+    correo: formulario.elements.correo,
     nombreAcompanante: formulario.elements.nombreAcompanante,
     detalle: formulario.elements.detalle,
     sitio: formulario.elements.sitio,
@@ -51,6 +53,7 @@ export function iniciarRsvp({ invitado = { saludo: '', nombre: '', espacios: 1, 
     return {
       nombre: campos.nombre.value,
       asistira: opcionElegida('asistira'),
+      correo: campos.correo.value,
       acompanante: { lleva: permiteAcompanante() ? opcionElegida('acompanante') : false, nombre: campos.nombreAcompanante.value },
       alimentacion: { tiene: opcionElegida('alimentacion'), detalle: campos.detalle.value },
     };
@@ -203,6 +206,26 @@ export function iniciarRsvp({ invitado = { saludo: '', nombre: '', espacios: 1, 
     mostrarVista('cerrado');
   }
 
+  function crearCodigoAleatorio() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+    const bytes = new Uint8Array(16);
+    if (window.crypto && typeof window.crypto.getRandomValues === 'function') window.crypto.getRandomValues(bytes);
+    return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  function obtenerCodigoDeDispositivo() {
+    try {
+      let codigo = window.localStorage.getItem(CLAVE_DE_DISPOSITIVO);
+      if (!codigo) {
+        codigo = crearCodigoAleatorio();
+        window.localStorage.setItem(CLAVE_DE_DISPOSITIVO, codigo);
+      }
+      return codigo;
+    } catch (error) {
+      return '';
+    }
+  }
+
   function reiniciar() {
     formulario.reset();
     campos.nombre.value = invitado.nombre;
@@ -220,7 +243,7 @@ export function iniciarRsvp({ invitado = { saludo: '', nombre: '', espacios: 1, 
     try {
       await enviarAHoja(RSVP.urlHoja, datos, {
         codigo: invitado.codigo,
-        invitacion: invitado.saludo || document.title,
+        dispositivo: obtenerCodigoDeDispositivo(),
         espacios: invitado.espacios,
         enviadoEn: new Date().toISOString(),
       });

@@ -130,6 +130,7 @@ body.modal-abierto {
 }
 
 .campo input[type="text"],
+.campo input[type="email"],
 .campo textarea {
   display: block;
   box-sizing: border-box;
@@ -150,6 +151,7 @@ body.modal-abierto {
 }
 
 .campo input[type="text"]:focus,
+.campo input[type="email"]:focus,
 .campo textarea:focus {
   border-color: var(--oliva);
   outline: 2px solid rgba(98, 111, 76, 0.28);
@@ -172,6 +174,13 @@ body.modal-abierto {
 .campo__error:empty,
 .rsvp__error-general:empty {
   display: none;
+}
+
+.campo__ayuda {
+  margin: 6px 0 0;
+  color: #776c58;
+  font-size: var(--t-pequeno);
+  line-height: 1.4;
 }
 
 .campo__contador {

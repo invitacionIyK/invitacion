@@ -2,9 +2,17 @@ import { contarPalabras } from './palabras.js';
 
 const LARGO_MAXIMO_NOMBRE = 100;
 const SOLO_LETRAS_Y_SIGNOS_DE_NOMBRE = /^[\p{L}\p{M}'’.\- ]+$/u;
+const FORMATO_DE_CORREO = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
+const LARGO_MAXIMO_CORREO = 254;
 
 function normalizar(texto) {
   return String(texto || '').replace(/\s+/g, ' ').trim();
+}
+
+function errorDeCorreo(correo) {
+  if (!correo) return 'Escribe tu correo electrónico.';
+  if (correo.length > LARGO_MAXIMO_CORREO || !FORMATO_DE_CORREO.test(correo)) return 'Revisa tu correo: parece que no es válido.';
+  return '';
 }
 
 function errorDeNombre(nombre, quien) {
@@ -26,8 +34,13 @@ export function validarFormulario(entrada, { maxPalabras = 500, permiteAcompanan
   const asistira = entrada.asistira;
   if (asistira === null || asistira === undefined) errores.asistira = 'Elige una opción.';
 
+  const correo = String(entrada.correo || '').trim().toLowerCase();
+  const mensajeCorreo = errorDeCorreo(correo);
+  if (mensajeCorreo) errores.correo = mensajeCorreo;
+
   const datos = {
     nombre,
+    correo,
     asistira: asistira === true,
     acompanante: { lleva: false, nombre: '' },
     alimentacion: { tiene: false, detalle: '' },

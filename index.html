@@ -235,6 +235,13 @@
             <p class="campo__error" id="rsvp-asistira-error" data-error-de="asistira" role="alert"></p>
           </fieldset>
 
+          <div class="campo">
+            <label for="rsvp-correo">Correo electrónico</label>
+            <input id="rsvp-correo" name="correo" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="254" aria-describedby="rsvp-correo-ayuda rsvp-correo-error">
+            <p class="campo__ayuda" id="rsvp-correo-ayuda">Lo usamos solo para identificar tu confirmación.</p>
+            <p class="campo__error" id="rsvp-correo-error" data-error-de="correo" role="alert"></p>
+          </div>
+
           <fieldset class="rsvp__detalles" id="rsvp-detalles" hidden disabled>
             <legend class="rsvp__solo-lectores">Detalles de tu asistencia</legend>
 

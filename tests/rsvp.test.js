@@ -7,6 +7,7 @@ import { construirMensaje, enlaceWhatsapp, enlaceWhatsappGeneral, enviarAHoja } 
 
 const base = () => ({
   nombre: 'Ana María López',
+  correo: 'ana@example.com',
   asistira: true,
   acompanante: { lleva: false, nombre: '' },
   alimentacion: { tiene: false, detalle: '' },
@@ -121,6 +122,7 @@ test('sin elegir si podrá asistir, hay error', () => {
 test('si no podrá asistir, solo se exige el nombre y lo demás se descarta', () => {
   const entrada = {
     nombre: 'Ana María López',
+    correo: 'ana@example.com',
     asistira: false,
     acompanante: { lleva: null, nombre: 'Luis Mora Vega' },
     alimentacion: { tiene: null, detalle: 'algo' },
@@ -258,3 +260,32 @@ test('enviarAHoja propaga el error de red para que la pantalla lo muestre', conF
     await assert.rejects(() => enviarAHoja('https://script.example/exec', base()), TypeError);
   },
 ));
+
+
+test('el correo es obligatorio', () => {
+  assert.equal(validarFormulario({ ...base(), correo: '' }).errores.correo, 'Escribe tu correo electrónico.');
+  assert.equal(validarFormulario({ ...base(), correo: '   ' }).errores.correo, 'Escribe tu correo electrónico.');
+});
+
+test('el correo se guarda sin espacios y en minúsculas', () => {
+  const resultado = validarFormulario({ ...base(), correo: '  Ana.Lopez+boda@Example.COM ' });
+  assert.equal(resultado.valido, true);
+  assert.equal(resultado.datos.correo, 'ana.lopez+boda@example.com');
+});
+
+test('los correos con formato inválido se rechazan', () => {
+  for (const correo of ['ana', 'ana@', '@example.com', 'ana@example', 'ana@@example.com', 'ana@exa mple.com', 'ana@example.c', 'ana@-example.com']) {
+    assert.ok(validarFormulario({ ...base(), correo }).errores.correo, correo);
+  }
+});
+
+test('los correos con formato válido se aceptan', () => {
+  for (const correo of ['ana@example.com', 'ana.lopez@mail.example.cr', 'a_b-c+d@sub.dominio.co.cr', 'ana123@gmail.com']) {
+    assert.equal(validarFormulario({ ...base(), correo }).valido, true, correo);
+  }
+});
+
+test('quien no podrá asistir también debe dejar su correo', () => {
+  assert.ok(validarFormulario({ ...base(), asistira: false, correo: '' }).errores.correo);
+  assert.equal(validarFormulario({ ...base(), asistira: false }).datos.correo, 'ana@example.com');
+});

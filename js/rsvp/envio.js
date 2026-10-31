@@ -56,6 +56,8 @@ export async function enviarAHoja(url, datos, extra = {}) {
     if (!resultado || resultado.ok !== true) {
       throw new Error((resultado && resultado.error) || 'El servicio no guardó la confirmación.');
     }
+
+    return resultado;
   } finally {
     clearTimeout(temporizador);
   }
