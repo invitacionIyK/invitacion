@@ -12,7 +12,7 @@ const TEXTURAS = [
   { fuente: 'cinta.svg', salida: 'cinta.jpg', ancho: 520, alto: 520, recorte: { x: 4, y: 4, width: 512, height: 512 }, tipo: 'jpeg' },
   { fuente: 'sello.html', salida: 'sello.png', ancho: 512, alto: 512, recorte: { x: 0, y: 0, width: 512, height: 512 }, tipo: 'png' },
   { fuente: 'ramita.svg', salida: 'ramita.png', ancho: 1060, alto: 520, recorte: { x: 0, y: 0, width: 1060, height: 520 }, tipo: 'png' },
-  { fuente: 'vista-previa.html', salida: 'vista-previa.jpg', ancho: 1200, alto: 630, recorte: { x: 0, y: 0, width: 1200, height: 630 }, tipo: 'jpeg' },
+  { fuente: 'vista-previa.html', salida: 'vista-previa-sobre.jpg', ancho: 1200, alto: 630, recorte: { x: 0, y: 0, width: 1200, height: 630 }, tipo: 'jpeg' },
   { fuente: 'icono.html', salida: 'icono.png', ancho: 180, alto: 180, recorte: { x: 0, y: 0, width: 180, height: 180 }, tipo: 'png' },
 ];
 

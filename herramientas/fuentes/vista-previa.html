@@ -10,11 +10,12 @@
     * { box-sizing: border-box; margin: 0; }
 
     body {
+      position: relative;
       width: 1200px;
       height: 630px;
       overflow: hidden;
-      background: radial-gradient(ellipse at 28% 45%, #fffef9 0%, #f6f2e6 70%, #ece6d4 100%);
-      color: #35402d;
+      background: radial-gradient(ellipse at 30% 40%, #3d5242 0%, #25362e 70%, #1c2b25 100%);
+      color: #e6dfcf;
       font-family: "Cormorant Garamond", serif;
     }
 
@@ -24,7 +25,7 @@
       right: 22px;
       bottom: 22px;
       left: 22px;
-      border: 1px solid #c9b98d;
+      border: 1px solid rgba(211, 188, 132, 0.4);
     }
 
     .marco::after {
@@ -34,19 +35,15 @@
       right: 8px;
       bottom: 8px;
       left: 8px;
-      border: 1px solid rgba(201, 185, 141, 0.45);
+      border: 1px solid rgba(211, 188, 132, 0.18);
     }
 
-    .foto {
+    .sobre {
       position: absolute;
-      top: 95px;
-      left: 95px;
-      width: 440px;
-      height: 440px;
-      border: 10px solid #eeeede;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 18px 40px rgba(53, 64, 45, 0.18);
+      top: 28px;
+      left: 130px;
+      height: 574px;
+      width: auto;
     }
 
     .texto {
@@ -54,67 +51,45 @@
       top: 0;
       right: 70px;
       bottom: 0;
-      left: 620px;
+      left: 640px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       text-align: center;
     }
 
-    .etiqueta {
-      color: #98845c;
-      font-family: "Jost", sans-serif;
-      font-size: 17px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-    }
-
     .adorno {
       width: 70px;
       height: 1px;
-      margin: 22px auto;
+      margin: 26px auto;
       background: #b9a46f;
     }
 
-    .nombres {
+    .noticia {
+      color: #f1ead8;
+      font-size: 76px;
       font-style: italic;
       font-weight: 500;
-      font-size: 82px;
-      line-height: 1.05;
-      color: #35402d;
+      line-height: 1.08;
     }
 
-    .nombres span {
-      display: block;
-      color: #98845c;
-      font-size: 54px;
-    }
-
-    .fecha {
-      font-size: 34px;
+    .pista {
+      color: #d9c79e;
+      font-family: "Jost", sans-serif;
+      font-size: 19px;
       font-weight: 500;
-      color: #4b5544;
-    }
-
-    .lugar {
-      margin-top: 8px;
-      font-size: 26px;
-      font-weight: 500;
-      color: #776c58;
-      font-style: italic;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
     }
   </style>
 </head>
 <body>
   <div class="marco"></div>
-  <img class="foto" src="../../assets/img/hero.jpg" alt="">
+  <img class="sobre" src="sobre-captura.png" alt="">
   <div class="texto">
-    <p class="etiqueta">Nos casamos</p>
+    <p class="noticia">Tenemos una gran noticia</p>
     <div class="adorno"></div>
-    <p class="nombres">Ivan<span>&amp;</span>Katherine</p>
-    <div class="adorno"></div>
-    <p class="fecha">13 de febrero de 2027</p>
-    <p class="lugar">Santa Bárbara de Heredia, Costa Rica</p>
+    <p class="pista">Abre el sobre</p>
   </div>
 </body>
 </html>

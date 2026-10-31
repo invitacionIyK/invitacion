@@ -15,7 +15,10 @@ const principal = document.getElementById('invitacion');
 marcarImagenesCargando(principal);
 
 
-const alAbrirLaInvitacion = () => iniciarRevelado(principal);
+const alAbrirLaInvitacion = () => {
+  document.title = 'Ivan & Katherine · Nuestra boda';
+  iniciarRevelado(principal);
+};
 
 try {
   iniciarContador();
