@@ -1,0 +1,219 @@
+:root {
+  --oliva: #626f4c;
+  --oliva-claro: #687750;
+  --oliva-oscuro: #35402d;
+  --oliva-texto: #3e4c34;
+  --papel: #faf8f2;
+  --borde: #d9dccc;
+  --superficie: #e8ecdf;
+
+  --fuente-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --fuente-texto: "Jost", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+  --t-etiqueta: 11px;
+  --t-pequeno: 13px;
+  --t-base: 15px;
+  --t-serif: 19px;
+  --t-serif-grande: 22px;
+  --t-h3: 26px;
+  --t-h2: clamp(30px, 8vw, 38px);
+  --t-nombres: clamp(46px, 13vw, 66px);
+  --t-numero: 30px;
+
+  --dorado: #b9a46f;
+  --dorado-oscuro: #98845c;
+
+  --caja-fondo: linear-gradient(150deg, #fffef9, #f6f2e8);
+  --caja-borde: 1px solid #d8c8a4;
+  --caja-radio: 18px;
+  --caja-sombra: 0 10px 28px rgba(44, 59, 40, 0.08);
+
+  --boton-radio: 14px;
+  --campo-radio: 12px;
+
+  --ease-suave: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --marco: 9px;
+  --rama: min(23vw, 96px);
+  --adornos: 0.6;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --marco: 20px;
+    --rama: 190px;
+    --adornos: 0.72;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body,
+.replica {
+  background:
+    linear-gradient(rgba(255, 254, 250, 0.55), rgba(255, 254, 250, 0.55)),
+    url("../assets/img/papel.jpg") 0 0 / 256px 256px,
+    var(--papel);
+}
+
+body::before,
+.replica::before {
+  content: "";
+  position: absolute;
+  top: var(--marco);
+  right: var(--marco);
+  bottom: var(--marco);
+  left: var(--marco);
+  z-index: -1;
+  border: 1px solid rgba(176, 148, 86, 0.5);
+  outline: 1px solid rgba(176, 148, 86, 0.32);
+  outline-offset: -5px;
+  pointer-events: none;
+}
+
+.replica::before {
+  bottom: -40px;
+}
+
+body::after,
+.replica::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  opacity: var(--adornos);
+  pointer-events: none;
+}
+
+body::after {
+  background:
+    url("../assets/img/rama.svg") left calc(var(--marco) - 2px) top calc(var(--marco) - 2px) / var(--rama) auto no-repeat,
+    url("../assets/img/rama.svg") right calc(var(--marco) - 2px) bottom calc(var(--marco) - 2px) / var(--rama) auto no-repeat,
+    url("../assets/img/adorno-flor.svg") center top calc(var(--marco) - 10px) / 64px 26px no-repeat,
+    url("../assets/img/adorno-flor.svg") center bottom calc(var(--marco) - 10px) / 64px 26px no-repeat,
+    url("../assets/img/adorno-lateral.svg") left calc(var(--marco) - 4px) center / 14px 80px no-repeat,
+    url("../assets/img/adorno-lateral.svg") right calc(var(--marco) - 4px) center / 14px 80px no-repeat;
+}
+
+.replica::after {
+  background:
+    url("../assets/img/rama.svg") left calc(var(--marco) - 2px) top calc(var(--marco) - 2px) / var(--rama) auto no-repeat,
+    url("../assets/img/adorno-flor.svg") center top calc(var(--marco) - 10px) / 64px 26px no-repeat;
+}
+
+body,
+.replica {
+  color: var(--oliva-oscuro);
+  font: 400 var(--t-base) / 1.6 var(--fuente-texto);
+  text-align: center;
+}
+
+*,
+*::before,
+*::after {
+  font-feature-settings: "lnum" 1 !important;
+}
+
+body {
+  position: relative;
+  margin: 0;
+}
+
+body.con-portada {
+  overflow: hidden;
+}
+
+.js body.con-portada #invitacion {
+  visibility: hidden;
+}
+
+main {
+  max-width: 620px;
+  margin: auto;
+  padding: 36px 22px 70px;
+  overflow-wrap: break-word;
+}
+
+main:focus {
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 400;
+}
+
+h1 {
+  margin: 8px 0 14px;
+  font: italic 500 var(--t-nombres) / 1.1 var(--fuente-serif);
+}
+
+h2 {
+  margin: 14px 0 10px;
+  font: 500 var(--t-h2) / 1.15 var(--fuente-serif);
+}
+
+.acento {
+  color: var(--oliva-claro);
+}
+
+.etiqueta {
+  margin: 0;
+  font: 500 var(--t-etiqueta) / 1.7 var(--fuente-texto);
+  letter-spacing: 0.22em;
+  text-wrap: balance;
+  text-transform: uppercase;
+}
+
+.frase {
+  margin: 16px 0;
+  font: italic 500 var(--t-serif-grande) / 1.45 var(--fuente-serif);
+}
+
+@media (min-width: 768px) {
+  main {
+    max-width: 720px;
+    padding-top: 56px;
+    padding-bottom: 90px;
+  }
+
+  :root {
+    --t-numero: 36px;
+  }
+}
+
+@media (max-width: 340px) {
+  main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

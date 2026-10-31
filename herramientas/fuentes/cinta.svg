@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="520" viewBox="0 0 520 520">
+  <filter id="cartulina" filterUnits="userSpaceOnUse" x="0" y="0" width="520" height="520" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="5" result="fieltro"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.5" numOctaves="2" seed="19" result="fibra"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="31" result="manchas"/>
+    <feComposite in="fieltro" in2="fibra" operator="arithmetic" k1="0" k2="1" k3="0.1" k4="0" result="altura"/>
+    <feDiffuseLighting in="altura" surfaceScale="1.1" diffuseConstant="1.2" lighting-color="#ffffff" result="luz">
+      <feDistantLight azimuth="225" elevation="58"/>
+    </feDiffuseLighting>
+    <feColorMatrix in="manchas" type="matrix" values="0.05 0 0 0 0.62  0.05 0 0 0 0.695  0.05 0 0 0 0.59  0 0 0 0 1" result="color"/>
+    <feBlend in="luz" in2="color" mode="multiply"/>
+  </filter>
+  <rect width="520" height="520" filter="url(#cartulina)"/>
+</svg>

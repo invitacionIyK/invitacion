@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Great Vibes"; src: url("great-vibes-normal.woff2") format("woff2"); }
+  body { margin: 0; background: transparent; }
+</style>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100">
+  <defs>
+
+    <filter id="lacre" filterUnits="userSpaceOnUse" x="-6" y="-6" width="112" height="112" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="5" result="irregular"/>
+      <feDisplacementMap in="SourceGraphic" in2="irregular" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="forma"/>
+      <feColorMatrix in="forma" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0" result="alturaBruta"/>
+      <feGaussianBlur in="alturaBruta" stdDeviation="1.15" result="alturaSuave"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="2" seed="8" result="poro"/>
+      <feComposite in="alturaSuave" in2="poro" operator="arithmetic" k1="0" k2="1" k3="0.02" k4="0" result="altura"/>
+      <feDiffuseLighting in="altura" surfaceScale="4.2" diffuseConstant="1.15" lighting-color="#ffffff" result="luzDura">
+        <feDistantLight azimuth="225" elevation="52"/>
+      </feDiffuseLighting>
+      <feComponentTransfer in="luzDura" result="luz"><feFuncR type="linear" slope="0.7" intercept="0.3"/><feFuncG type="linear" slope="0.7" intercept="0.3"/><feFuncB type="linear" slope="0.7" intercept="0.3"/></feComponentTransfer>
+      <feSpecularLighting in="altura" surfaceScale="4.2" specularConstant="0.55" specularExponent="16" lighting-color="#fff2c8" result="brillo">
+        <feDistantLight azimuth="225" elevation="52"/>
+      </feSpecularLighting>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="2" result="tono"/>
+      <feColorMatrix in="tono" type="matrix" values="0.12 0 0 0 0.66  0.12 0 0 0 0.52  0.10 0 0 0 0.29  0 0 0 0 1" result="oro"/>
+      <feBlend in="luz" in2="oro" mode="multiply" result="cera"/>
+      <feComposite in="cera" in2="brillo" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="conBrillo"/>
+      <feComponentTransfer in="forma" result="mascara"><feFuncA type="linear" slope="10" intercept="0"/></feComponentTransfer>
+      <feComposite in="conBrillo" in2="mascara" operator="in"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#lacre)">
+    <path d="M50 3 C72 2 92 14 96 36 C100 58 91 82 70 92 C52 99 27 96 13 79 C1 63 2 37 13 21 C22 9 36 4 50 3Z" fill="#4d4d4d"/>
+    <circle cx="50" cy="50" r="33" fill="#8c8c8c"/>
+    <circle cx="50" cy="50" r="34.5" fill="none" stroke="#d9d9d9" stroke-width="5"/>
+    <g fill="#c8c8c8" stroke="#c8c8c8" stroke-width="0.6" stroke-linejoin="round" font-family="Great Vibes" font-size="31" text-anchor="middle">
+      <text x="43" y="61">I</text>
+      <text x="58" y="61">K</text>
+    </g>
+  </g>
+</svg>
+</body>

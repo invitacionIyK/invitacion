@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#25362e">
+  <title>Ivan &amp; Katherine · Nuestra boda</title>
+  <meta name="description" content="Te invitamos a celebrar nuestra boda el 13 de febrero de 2027 en Santa Bárbara de Heredia, Costa Rica.">
+  <link rel="canonical" href="https://invitacioniyk.github.io/invitacion/" data-ruta="/">
+  <link rel="icon" type="image/png" href="assets/img/icono.png">
+  <link rel="apple-touch-icon" href="assets/img/icono.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CR">
+  <meta property="og:site_name" content="Ivan &amp; Katherine">
+  <meta property="og:title" content="Ivan &amp; Katherine · Nuestra boda">
+  <meta property="og:description" content="Te invitamos a celebrar nuestra boda el 13 de febrero de 2027 en Santa Bárbara de Heredia, Costa Rica.">
+  <meta property="og:url" content="https://invitacioniyk.github.io/invitacion/" data-ruta="/">
+  <meta property="og:image" content="https://invitacioniyk.github.io/invitacion/assets/img/vista-previa.jpg" data-ruta="/assets/img/vista-previa.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ivan y Katherine, 13 de febrero de 2027">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    document.documentElement.classList.add('js');
+  </script>
+  <script nomodule>document.documentElement.classList.remove('js');</script>
+
+  <link rel="preload" as="image" href="assets/img/sello.png">
+  <link rel="preload" as="image" href="assets/img/ramita.png">
+  <link rel="preload" as="image" href="assets/img/papel.jpg">
+  <link rel="preload" as="image" href="assets/img/cinta.jpg">
+
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-normal.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-italic.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/jost-normal.woff2">
+  <link rel="modulepreload" href="js/config.js">
+  <link rel="modulepreload" href="js/contador.js">
+  <link rel="modulepreload" href="js/esqueleto.js">
+  <link rel="modulepreload" href="js/iconos.js">
+  <link rel="modulepreload" href="js/invitado.js">
+  <link rel="modulepreload" href="js/main.js">
+  <link rel="modulepreload" href="js/portada.js">
+  <link rel="modulepreload" href="js/precarga.js">
+  <link rel="modulepreload" href="js/regalos.js">
+  <link rel="modulepreload" href="js/replica.js">
+  <link rel="modulepreload" href="js/revelado.js">
+  <link rel="modulepreload" href="js/rsvp/envio.js">
+  <link rel="modulepreload" href="js/rsvp/formulario.js">
+  <link rel="modulepreload" href="js/rsvp/modal.js">
+  <link rel="modulepreload" href="js/rsvp/palabras.js">
+  <link rel="modulepreload" href="js/rsvp/validacion.js">
+  <link rel="modulepreload" href="js/scroll.js">
+
+  <link rel="stylesheet" href="css/fuentes.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/secciones.css">
+  <link rel="stylesheet" href="css/rsvp.css">
+  <link rel="stylesheet" href="css/portada.css">
+</head>
+<body class="con-portada">
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-mapa" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.7-6.5-11a6.5 6.5 0 0 1 13 0c0 5.3-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+    <symbol id="i-navegar" viewBox="0 0 24 24"><path d="M12 3.5 19.5 20 12 16l-7.5 4z"/></symbol>
+    <symbol id="i-sobre" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="m4 8 8 5.5L20 8"/></symbol>
+    <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="3"/><path d="M5.5 15.5V7A2.5 2.5 0 0 1 8 4.5h8"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 19.5l1.2-4A8 8 0 1 1 20 11.5z"/></symbol>
+    <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11m0-11-11 11"/></symbol>
+  </svg>
+
+
+  <div class="portada portada--cargando" id="portada" aria-busy="true">
+    <div class="portada__fondo"></div>
+    <div class="portada__esqueleto" aria-hidden="true">
+      <span class="portada__esqueleto-tarjeta"></span>
+      <span class="portada__esqueleto-linea"></span>
+      <span class="portada__esqueleto-linea portada__esqueleto-linea--corta"></span>
+    </div>
+
+    <div class="portada__contenido">
+      <button class="sobre" id="sobre" type="button" aria-label="Abrir la invitación">
+        <span class="sobre__interior"></span>
+
+        <span class="carta" id="carta">
+          <span class="carta__sombra"></span>
+        </span>
+
+        <span class="sobre__puerta sobre__puerta--izquierda" id="puerta-izquierda">
+          <span class="sobre__cara"></span>
+          <span class="sobre__reverso"></span>
+          <span class="sobre__reverso-sombra"></span>
+        </span>
+        <span class="sobre__puerta sobre__puerta--derecha" id="puerta-derecha">
+          <span class="sobre__cara"></span>
+          <span class="sobre__reverso"></span>
+          <span class="sobre__reverso-sombra"></span>
+        </span>
+
+        <span class="sobre__banda" id="banda">
+          <span class="sobre__cinta"></span>
+          <img class="sobre__ramita" src="assets/img/ramita.png" width="1060" height="520" alt="">
+          <span class="sobre__sello">
+            <span class="sobre__sello-cuerpo" id="sello">
+              <img class="sobre__sello-imagen" src="assets/img/sello.png" width="512" height="512" alt="">
+              <span class="sobre__sello-brillo"></span>
+              <svg class="sobre__grieta" id="grieta" viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M33 16 L43 35 L36 47 L53 59 L46 70 L61 88" fill="none" stroke="#fff3c9" stroke-opacity=".55" stroke-width="1.2" transform="translate(.9 .9)"/>
+                <path d="M33 16 L43 35 L36 47 L53 59 L46 70 L61 88" fill="none" stroke="#3f2c0e" stroke-width="1.5" stroke-linejoin="bevel"/>
+              </svg>
+            </span>
+          </span>
+        </span>
+      </button>
+
+      <p class="portada__mensaje portada__texto">Tenemos algo especial que compartir contigo...</p>
+      <p class="portada__pista portada__texto">Toca el sello para abrir</p>
+      <p class="portada__adorno portada__texto" aria-hidden="true">✦ &nbsp; ✧ &nbsp; ✦</p>
+    </div>
+  </div>
+
+  <main id="invitacion">
+    <p class="etiqueta" data-portada="inicio">Con amor, queremos compartir nuestro día</p>
+    <img class="portada-foto" src="assets/img/hero.jpg" width="560" height="420" alt="Imagen de Ivan y Katherine">
+    <h1>Ivan <span class="acento">&amp;</span> Katherine</h1>
+    <p class="frase">“El amor nos trajo hasta aquí, y la vida nos regala la alegría de celebrarlo con ustedes.”</p>
+    <p class="etiqueta" data-portada="fin">13 de febrero de 2027</p>
+
+    <section class="seccion" id="contador" hidden>
+      <h2>Cuenta regresiva</h2>
+      <div class="contador" role="timer" aria-live="off">
+        <div class="contador__unidad"><span class="contador__numero" data-unidad="dias">--</span><small>Días</small></div>
+        <div class="contador__unidad"><span class="contador__numero" data-unidad="horas">--</span><small>Horas</small></div>
+        <div class="contador__unidad"><span class="contador__numero" data-unidad="minutos">--</span><small>Minutos</small></div>
+        <div class="contador__unidad"><span class="contador__numero" data-unidad="segundos">--</span><small>Segundos</small></div>
+      </div>
+    </section>
+
+    <section class="seccion" id="tu-invitacion">
+      <p class="invitado__saludo" data-saludo hidden></p>
+      <h2 data-espacios-titulo>Una invitación especial para ti</h2>
+      <div class="lugares" data-lugares aria-hidden="true"><span class="lugar"></span></div>
+      <p class="invitado__nota" data-espacios-nota>Hemos reservado un lugar para ti en nuestra celebración, para compartir este día tan especial.</p>
+    </section>
+
+    <section class="seccion">
+      <p class="etiqueta">Nos encantará verte allí</p>
+      <h2>La celebración</h2>
+      <p class="detalle">
+        <strong>Sábado, 13 de febrero de 2027</strong><br>
+        Centro de Eventos Hikarú<br>
+        Santa Bárbara de Heredia, Costa Rica
+      </p>
+
+      <ol class="programa" aria-label="Programa del día">
+        <li class="programa__momento">
+          <span class="programa__punto" aria-hidden="true"></span>
+          <span class="programa__hora">3:30 p. m.</span>
+          <span class="programa__titulo">Recepción</span>
+        </li>
+        <li class="programa__momento">
+          <span class="programa__punto" aria-hidden="true"></span>
+          <span class="programa__hora">4:00 p. m.</span>
+          <span class="programa__titulo">Ceremonia</span>
+        </li>
+      </ol>
+
+      <div class="vestimenta">
+        <img class="vestimenta__imagen" src="assets/img/vestimenta.jpg" width="1024" height="687" loading="lazy"
+             alt="Código de vestimenta formal: los caballeros, traje o conjunto formal con saco y corbata; las damas, vestido elegante.">
+        <p class="vestimenta__nota">Agradecemos reservar el color blanco para la novia.</p>
+      </div>
+
+      <a class="boton" target="_blank" rel="noopener noreferrer"
+         href="https://www.google.com/maps/search/?api=1&amp;query=Centro%20de%20Eventos%20Hikaru%20Santa%20Barbara%20Heredia%20Costa%20Rica"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-mapa"/></svg><span>Cómo llegar · Google Maps</span></a>
+      <a class="boton" target="_blank" rel="noopener noreferrer"
+         href="https://waze.com/ul?q=Centro%20de%20Eventos%20Hikaru%20Santa%20Barbara%20Heredia%20Costa%20Rica&amp;navigate=yes"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-navegar"/></svg><span>Abrir en Waze</span></a>
+
+      <div class="confirmacion">
+        <p class="confirmacion__titulo">✧ &nbsp;CONFIRMACIÓN DE ASISTENCIA&nbsp; ✧</p>
+        <p class="confirmacion__texto">Agradecemos confirmar tu asistencia a más tardar el <strong>21 de noviembre de 2026</strong>, para preparar con cariño cada detalle de nuestra celebración.</p>
+      </div>
+
+      <a class="boton boton--confirmar" id="boton-confirmar" data-abrir-rsvp target="_blank" rel="noopener noreferrer"
+         href="https://wa.me/50683229846?text=Hola%2C%20confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Ivan%20y%20Katherine."><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-sobre"/></svg><span>Confirmar asistencia</span></a>
+    </section>
+
+    <section class="seccion" id="regalos">
+      <p class="etiqueta">Tu presencia es nuestro mejor regalo</p>
+      <h2>Mesa de regalos</h2>
+      <p>Si deseas tener un detalle con nosotros, puedes hacerlo mediante SINPE Móvil a cualquiera de estos números.</p>
+      <div class="regalo">
+        <strong>8322 9846</strong><br>
+        <button class="boton boton--secundario boton--chico" type="button" data-numero="83229846"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-copiar"/></svg><span>Copiar número</span></button>
+      </div>
+      <div class="regalo">
+        <strong>8956 1156</strong><br>
+        <button class="boton boton--secundario boton--chico" type="button" data-numero="89561156"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-copiar"/></svg><span>Copiar número</span></button>
+      </div>
+      <p class="regalo__mensaje" id="regalo-mensaje" aria-live="polite"></p>
+    </section>
+
+    <section class="seccion">
+      <p class="frase">Gracias por acompañarnos en esta nueva etapa.</p>
+      <p>Con cariño,<br><strong>Ivan &amp; Katherine ♡</strong></p>
+    </section>
+  </main>
+
+  <div class="rsvp" id="rsvp" hidden>
+    <div class="rsvp__fondo" data-cerrar-rsvp></div>
+
+    <section class="rsvp__panel" role="dialog" aria-modal="true" aria-labelledby="rsvp-titulo" tabindex="-1">
+      <button class="rsvp__cerrar" type="button" data-cerrar-rsvp aria-label="Cerrar"><svg class="icono" aria-hidden="true" focusable="false"><use href="#i-cerrar"/></svg></button>
+
+      <div class="rsvp__vista" data-vista="formulario">
+        <p class="etiqueta">Confirmación de asistencia</p>
+        <h2 id="rsvp-titulo">Cuéntanos de ti</h2>
+
+        <form class="rsvp__formulario" id="rsvp-formulario" novalidate>
+          <div class="campo">
+            <label for="rsvp-nombre">Nombre completo</label>
+            <input id="rsvp-nombre" name="nombre" type="text" autocomplete="name" maxlength="100" aria-describedby="rsvp-nombre-error">
+            <p class="campo__error" id="rsvp-nombre-error" data-error-de="nombre" role="alert"></p>
+          </div>
+
+          <fieldset class="campo opciones" aria-describedby="rsvp-asistira-error">
+            <legend>¿Podrás acompañarnos?</legend>
+            <div class="opciones__botones">
+              <label class="opcion"><input type="radio" name="asistira" value="si"><span>Sí, ahí estaré</span></label>
+              <label class="opcion"><input type="radio" name="asistira" value="no"><span>No podré asistir</span></label>
+            </div>
+            <p class="campo__error" id="rsvp-asistira-error" data-error-de="asistira" role="alert"></p>
+          </fieldset>
+
+          <fieldset class="rsvp__detalles" id="rsvp-detalles" hidden disabled>
+            <legend class="rsvp__solo-lectores">Detalles de tu asistencia</legend>
+
+            <fieldset class="campo opciones" id="rsvp-grupo-acompanante" aria-describedby="rsvp-acompanante-error">
+              <legend>¿Llevarás acompañante?</legend>
+              <div class="opciones__botones">
+                <label class="opcion"><input type="radio" name="acompanante" value="si"><span>Sí</span></label>
+                <label class="opcion"><input type="radio" name="acompanante" value="no"><span>No</span></label>
+              </div>
+              <p class="campo__error" id="rsvp-acompanante-error" data-error-de="acompanante" role="alert"></p>
+            </fieldset>
+
+            <div class="campo campo--condicional" id="rsvp-bloque-acompanante" hidden>
+              <label for="rsvp-nombre-acompanante">Nombre completo del acompañante</label>
+              <input id="rsvp-nombre-acompanante" name="nombreAcompanante" type="text" autocomplete="off" maxlength="100" disabled aria-describedby="rsvp-nombre-acompanante-error">
+              <p class="campo__error" id="rsvp-nombre-acompanante-error" data-error-de="nombreAcompanante" role="alert"></p>
+            </div>
+
+            <fieldset class="campo opciones" aria-describedby="rsvp-alimentacion-error">
+              <legend>¿Tienes alguna alergia, limitante o problema con algún alimento?</legend>
+              <div class="opciones__botones">
+                <label class="opcion"><input type="radio" name="alimentacion" value="si"><span>Sí</span></label>
+                <label class="opcion"><input type="radio" name="alimentacion" value="no"><span>No</span></label>
+              </div>
+              <p class="campo__error" id="rsvp-alimentacion-error" data-error-de="alimentacion" role="alert"></p>
+            </fieldset>
+
+            <div class="campo campo--condicional" id="rsvp-bloque-alimentacion" hidden>
+              <label for="rsvp-detalle">Cuéntanos cuál es</label>
+              <textarea id="rsvp-detalle" name="detalle" rows="5" maxlength="6000" disabled aria-describedby="rsvp-contador rsvp-detalle-error"></textarea>
+              <p class="campo__contador" id="rsvp-contador" aria-live="polite"></p>
+              <p class="campo__error" id="rsvp-detalle-error" data-error-de="detalle" role="alert"></p>
+            </div>
+          </fieldset>
+
+          <input class="rsvp__trampa" type="text" name="sitio" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <p class="rsvp__error-general" id="rsvp-error-general" role="alert"></p>
+          <button class="rsvp__enlace" id="rsvp-alternativa" type="button" hidden>Enviar mi confirmación por WhatsApp</button>
+          <button class="boton rsvp__enviar" id="rsvp-enviar" type="submit">Confirmar</button>
+        </form>
+      </div>
+
+      <div class="rsvp__vista" data-vista="resumen" hidden>
+        <p class="etiqueta">Un último paso</p>
+        <h2 id="rsvp-titulo-resumen" tabindex="-1">Revisa y envía</h2>
+        <dl class="rsvp__resumen" id="rsvp-resumen"></dl>
+        <p class="rsvp__aviso">Al tocar el botón se abrirá WhatsApp con tu confirmación lista. Solo falta que presiones enviar.</p>
+        <div class="rsvp__acciones" id="rsvp-acciones"></div>
+        <button class="rsvp__enlace" type="button" data-volver-al-formulario>Corregir mis datos</button>
+      </div>
+
+      <div class="rsvp__vista" data-vista="cerrado" hidden>
+        <p class="rsvp__adorno" aria-hidden="true">✦</p>
+        <h2 id="rsvp-titulo-cerrado" tabindex="-1">El plazo terminó</h2>
+        <p class="rsvp__mensaje">El plazo para confirmar por esta página terminó el 21 de noviembre. Si todavía quieres avisarnos, escríbenos por WhatsApp.</p>
+        <div class="rsvp__acciones" id="rsvp-acciones-cerrado"></div>
+        <button class="rsvp__enlace" type="button" data-cerrar-rsvp>Cerrar</button>
+      </div>
+
+      <div class="rsvp__vista" data-vista="gracias" hidden>
+        <p class="rsvp__adorno" aria-hidden="true">✦</p>
+        <h2 id="rsvp-titulo-gracias" tabindex="-1">¡Gracias!</h2>
+        <p class="rsvp__mensaje" id="rsvp-gracias-texto"></p>
+        <button class="boton rsvp__enviar" type="button" data-cerrar-rsvp>Cerrar</button>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="520" viewBox="-45 -10 265 130">
+  <defs>
+    <linearGradient id="haz" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8aa46c"/>
+      <stop offset=".5" stop-color="#5d7745"/>
+      <stop offset="1" stop-color="#425a33"/>
+    </linearGradient>
+    <linearGradient id="enves" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9c7aa"/>
+      <stop offset=".5" stop-color="#95a886"/>
+      <stop offset="1" stop-color="#788d69"/>
+    </linearGradient>
+    <linearGradient id="tallo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b8a55"/>
+      <stop offset="1" stop-color="#585a35"/>
+    </linearGradient>
+
+    <g id="hojaHaz">
+      <path d="M0 0 C8 -7.2 30 -8.6 46 -1.6 C31 7 9 7.6 0 0Z" fill="url(#haz)"/>
+      <path d="M2 0 C14 -.8 31 -1.2 45 -1.5" fill="none" stroke="#c4d49a" stroke-opacity=".75" stroke-width=".7" stroke-linecap="round"/>
+      <path d="M10 -.5 L18 -4.6 M18 -.9 L27 -5.2 M27 -1.3 L35 -4.3 M10 .1 L17 3.9 M18 -.1 L26 4.3 M27 -.4 L35 3" fill="none" stroke="#e8f0c8" stroke-opacity=".17" stroke-width=".35"/>
+    </g>
+    <g id="hojaEnves">
+      <path d="M0 0 C8 -7.2 30 -8.6 46 -1.6 C31 7 9 7.6 0 0Z" fill="url(#enves)"/>
+      <path d="M2 0 C14 -.8 31 -1.2 45 -1.5" fill="none" stroke="#e3ead6" stroke-opacity=".8" stroke-width=".7" stroke-linecap="round"/>
+      <path d="M10 -.5 L18 -4.6 M18 -.9 L27 -5.2 M27 -1.3 L35 -4.3 M10 .1 L17 3.9 M18 -.1 L26 4.3 M27 -.4 L35 3" fill="none" stroke="#ffffff" stroke-opacity=".14" stroke-width=".35"/>
+    </g>
+
+    <filter id="relieve" filterUnits="userSpaceOnUse" x="-50" y="-12" width="275" height="135" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="domo"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="grano"/>
+      <feComposite in="domo" in2="grano" operator="arithmetic" k1="0" k2="1" k3="0.05" k4="0" result="altura"/>
+      <feDiffuseLighting in="altura" surfaceScale="3" diffuseConstant="1.15" lighting-color="#ffffff" result="luzDura">
+        <feDistantLight azimuth="225" elevation="52"/>
+      </feDiffuseLighting>
+      <feComponentTransfer in="luzDura" result="luz">
+        <feFuncR type="linear" slope="0.62" intercept="0.38"/>
+        <feFuncG type="linear" slope="0.62" intercept="0.38"/>
+        <feFuncB type="linear" slope="0.62" intercept="0.38"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="luz" mode="multiply" result="iluminada"/>
+      <feComposite in="iluminada" in2="SourceAlpha" operator="in"/>
+    </filter>
+
+    
+    <filter id="sombraHoja" x="-20%" y="-30%" width="150%" height="180%">
+      <feDropShadow dx="0.5" dy="0.9" stdDeviation="0.7" flood-color="#1c2a14" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#relieve)">
+    <path d="M214 60 C160 58 92 46 6 27" fill="none" stroke="url(#tallo)" stroke-width="2.3" stroke-linecap="round"/>
+    <path d="M214 59.2 C160 57.2 92 45.2 6 26.2" fill="none" stroke="#a6a56b" stroke-opacity=".5" stroke-width=".6" stroke-linecap="round"/>
+
+    <g filter="url(#sombraHoja)">
+      <use href="#hojaHaz" transform="translate(168 56) rotate(-126) scale(1.15 1.15)"/>
+      <use href="#hojaEnves" transform="translate(134 50) rotate(-134) scale(1.2 -1.2)"/>
+      <use href="#hojaHaz" transform="translate(100 44) rotate(-137) scale(1.15 1.15)"/>
+      <use href="#hojaHaz" transform="translate(66 38) rotate(-139) scale(1.05 -1.05)"/>
+      <use href="#hojaEnves" transform="translate(34 32) rotate(-141) scale(.95 .95)"/>
+
+      <use href="#hojaHaz" transform="translate(152 54) rotate(150) scale(1.1 -1.1)"/>
+      <use href="#hojaHaz" transform="translate(118 48) rotate(145) scale(1.15 1.15)"/>
+      <use href="#hojaEnves" transform="translate(84 42) rotate(144) scale(1.1 -1.1)"/>
+      <use href="#hojaHaz" transform="translate(50 36) rotate(141) scale(1 1)"/>
+      <use href="#hojaHaz" transform="translate(20 30) rotate(139) scale(.85 -.85)"/>
+
+      <use href="#hojaHaz" transform="translate(7 27) rotate(-173) scale(.95 .95)"/>
+    </g>
+  </g>
+</svg>
